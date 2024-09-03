@@ -35,8 +35,7 @@ jobs:
       - name: ▶️ Run test and collect coverage
         run: npm run test
 
-      - name: Upload coverage reports to Codecov
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4.0.1
-        with:
-          token: ${{secrets.CODECOV_TOKEN}}
-          slug: codecov/codecov-demo
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
