@@ -41,5 +41,3 @@ workflows:
     jobs:
       - cypress/run:
           start-command: 'npm run start'
-      - cypress/run # "run" job comes from "cypress" orb
-          start-command: 'npm run start'
