@@ -5,18 +5,17 @@ orbs:
   # the strict explicit version "cypress-io/cypress@3.x.y"
   # to lock the version and prevent unexpected CI changes
   cypress: cypress-io/cypress@3
-executors:
-  default:
-    description: |
-      Single Docker container used to run Cypress Tests
-    docker:
-      - image: cimg/node:18.17.0-browsers
-    parameters:
-      node-version:
-        default: 18.17.0
-        description: |
-          The version of Node to run your tests with.
-        type: string
+default:
+  description: |
+    Single Docker container used to run Cypress Tests
+  docker:
+    - image: cimg/node:18.17.0-browsers
+  parameters:
+    node-version:
+      default: 18.17.0
+      description: |
+        The version of Node to run your tests with.
+      type: string
 workflows:
   build:
     jobs:
