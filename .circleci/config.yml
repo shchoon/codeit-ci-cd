@@ -1,15 +1,41 @@
 version: 2.1
+
 orbs:
-  # "cypress-io/cypress@3" installs the latest published
-  # version "s.x.y" of the orb. We recommend you then use
-  # the strict explicit version "cypress-io/cypress@3.x.y"
-  # to lock the version and prevent unexpected CI changes
+  # Use the latest version of the Cypress Orb
   cypress: cypress-io/cypress@3
-docker:
-  - image: cimg/node:18.17.0-browsers
-workflows:
+
+executors:
+  default:
+    description: |
+      Single Docker container used to run Cypress Tests
+    docker:
+      - image: cimg/node:18.17.0-browsers # Specify the Node.js version and browser images here
+    parameters:
+      node-version:
+        default: 18.17.0
+        description: |
+          The version of Node to run your tests with.
+        type: string
+
+jobs:
   build:
-    jobs:
+    executor: default # Use the defined executor here
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - run:
+          name: Build application
+          command: npm run build
+      - run:
+          name: Start application
+          command: npm run start
       - cypress/run:
           cypress-command: npx wait-on@latest http://localhost:3000 && npx cypress run
           start-command: "npm run build && npm run start"
+
+workflows:
+  build:
+    jobs:
+      - build
