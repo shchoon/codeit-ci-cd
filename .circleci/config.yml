@@ -1,25 +1,9 @@
 version: 2.1
 
-orbs:
-  # Use the latest version of the Cypress Orb
-  cypress: cypress-io/cypress@3
-
-executors:
-  default:
-    description: |
-      Single Docker container used to run Cypress Tests
-    docker:
-      - image: cimg/node:18.17.0-browsers # Specify the Node.js version and browser images here
-    parameters:
-      node-version:
-        default: 18.17.0
-        description: |
-          The version of Node to run your tests with.
-        type: string
-
 jobs:
-  build:
-    executor: default # Use the defined executor here
+  cypress-test:
+    docker:
+      - image: cimg/node:18.17.0-browsers
     steps:
       - checkout
       - run:
@@ -30,12 +14,11 @@ jobs:
           command: npm run build
       - run:
           name: Start application
-          command: npm run start
-      - cypress/run:
-          cypress-command: npx wait-on@latest http://localhost:3000 && npx cypress run
-          start-command: "npm run build && npm run start"
-
+          command: |
+            npm run start & npx wait-on http://localhost:3000
+      - run:
+          command: npx cypress run
 workflows:
-  build:
+  build_and_test:
     jobs:
-      - build
+      - cypress-test
