@@ -10,7 +10,7 @@ executors:
     description: |
       Single Docker container used to run Cypress Tests
     docker:
-      - image: cimg/node:<< parameters.node-version >>-browsers
+      - image: cimg/node:18.17.0-browsers
     parameters:
       node-version:
         default: 18.17.0
